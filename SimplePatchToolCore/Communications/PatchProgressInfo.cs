@@ -1,4 +1,6 @@
-﻿namespace SimplePatchToolCore
+﻿using FastRsync.Diagnostics;
+
+namespace SimplePatchToolCore
 {
 	public interface IOperationProgress
 	{
@@ -6,7 +8,7 @@
 		string ProgressInfo { get; }
 	}
 
-	public class FilePatchProgress : IOperationProgress, Octodiff.Diagnostics.IProgressReporter
+	public class FilePatchProgress : IOperationProgress, IProgressReporter
 	{
 		private readonly PatchIntercomms comms;
 
@@ -28,7 +30,12 @@
 			Percentage = (int) ( (double) currentPosition / total * 100.0 + 0.5 );
 			comms.SetProgress( this );
 		}
-	}
+
+        public void Report(ProgressReport value)
+        {
+            //throw new System.NotImplementedException();
+        }
+    }
 
 	public class DownloadProgress : IOperationProgress
 	{

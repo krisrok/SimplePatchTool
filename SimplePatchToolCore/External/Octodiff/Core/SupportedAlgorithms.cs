@@ -1,6 +1,8 @@
+using System;
 using System.Security.Cryptography;
+using FastRsync.Hash;
 
-namespace Octodiff.Core
+namespace FastRsync.Core
 {
     public static class SupportedAlgorithms
     {
@@ -11,32 +13,41 @@ namespace Octodiff.Core
                 return new HashAlgorithmWrapper("SHA1", SHA1.Create());
             }
 
+            public static IHashAlgorithm Md5()
+            {
+                return new HashAlgorithmWrapper("MD5", MD5.Create());
+            }
+
+            public static IHashAlgorithm XxHash()
+            {
+                return new XxHashAlgorithm();
+            }
+
             public static IHashAlgorithm Default()
             {
-                return Sha1();
+                return XxHash();
             }
 
             public static IHashAlgorithm Create(string algorithm)
             {
-                if (algorithm == "SHA1")
-                    return Sha1();
+                switch (algorithm)
+                {
+                    case "XXH64":
+                        return XxHash();
+                    case "MD5":
+                        return Md5();
+                    case "SHA1":
+                        return Sha1();
+                }
 
-                throw new CompatibilityException(
-                    $"The hash algorithm '{algorithm}' is not supported in this version of Octodiff");
+                throw new NotSupportedException($"The hash algorithm '{algorithm}' is not supported");
             }
         }
 
         public static class Checksum
         {
-#pragma warning disable 618
-            public static IRollingChecksum Adler32Rolling(bool useV2 = false)
-            {
-                if (useV2)
-                    return new Adler32RollingChecksumV2();
-
-                return new Adler32RollingChecksum();
-            }
-#pragma warning restore 618
+            public static IRollingChecksum Adler32Rolling() { return new Adler32RollingChecksum();  }
+            public static IRollingChecksum Adler32RollingV2() { return new Adler32RollingChecksumV2(); }
 
             public static IRollingChecksum Default()
             {
@@ -45,15 +56,11 @@ namespace Octodiff.Core
 
             public static IRollingChecksum Create(string algorithm)
             {
-                switch (algorithm)
-                {
-                    case "Adler32":
-                        return Adler32Rolling();
-                    case "Adler32V2":
-                        return Adler32Rolling(true);
-                }
-                throw new CompatibilityException(
-                    $"The rolling checksum algorithm '{algorithm}' is not supported in this version of Octodiff");
+                if (algorithm == "Adler32")
+                    return Adler32Rolling();
+                if (algorithm == "Adler32V2")
+                    return Adler32RollingV2();
+                throw new NotSupportedException($"The rolling checksum algorithm '{algorithm}' is not supported");
             }
         }
     }

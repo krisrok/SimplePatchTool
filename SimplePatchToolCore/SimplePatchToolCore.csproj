@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>SimplePatchToolCore</RootNamespace>
     <AssemblyName>SimplePatchTool</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFrameworkProfile>
@@ -39,6 +39,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,6 +49,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject />
@@ -59,10 +61,68 @@
     <AssemblyOriginatorKeyFile>..\SimplePatchTool.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\Extras\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Data.HashFunction.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=80c9288e394c1322, processorArchitecture=MSIL">
+      <HintPath>..\Extras\packages\System.Data.HashFunction.Core.2.0.0\lib\net45\System.Data.HashFunction.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.Interfaces, Version=2.0.0.0, Culture=neutral, PublicKeyToken=80c9288e394c1322, processorArchitecture=MSIL">
+      <HintPath>..\Extras\packages\System.Data.HashFunction.Interfaces.2.0.0\lib\net45\System.Data.HashFunction.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.HashFunction.xxHash, Version=2.0.0.0, Culture=neutral, PublicKeyToken=80c9288e394c1322, processorArchitecture=MSIL">
+      <HintPath>..\Extras\packages\System.Data.HashFunction.xxHash.2.0.0\lib\net45\System.Data.HashFunction.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="External\7zip\Common\CommandLineParser.cs" />
+    <Compile Include="External\7zip\Common\CRC.cs" />
+    <Compile Include="External\7zip\Common\InBuffer.cs" />
+    <Compile Include="External\7zip\Common\OutBuffer.cs" />
+    <Compile Include="External\7zip\Compress\LzmaAlone\LzmaAlone.cs" />
+    <Compile Include="External\7zip\Compress\LzmaAlone\LzmaBench.cs" />
+    <Compile Include="External\7zip\Compress\LZMA\LzmaBase.cs" />
+    <Compile Include="External\7zip\Compress\LZMA\LzmaDecoder.cs" />
+    <Compile Include="External\7zip\Compress\LZMA\LzmaEncoder.cs" />
+    <Compile Include="External\7zip\Compress\LZ\IMatchFinder.cs" />
+    <Compile Include="External\7zip\Compress\LZ\LzBinTree.cs" />
+    <Compile Include="External\7zip\Compress\LZ\LzInWindow.cs" />
+    <Compile Include="External\7zip\Compress\LZ\LzOutWindow.cs" />
+    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoder.cs" />
+    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoderBit.cs" />
+    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoderBitTree.cs" />
+    <Compile Include="External\7zip\ICoder.cs" />
+    <Compile Include="External\Octodiff\Core\AggregateCopyOperationsDecorator.cs" />
+    <Compile Include="External\Octodiff\Core\BinaryFormat.cs" />
+    <Compile Include="External\Octodiff\Core\ChunkSignature.cs" />
+    <Compile Include="External\Octodiff\Core\ChunkSignatureChecksumComparer.cs" />
+    <Compile Include="External\Octodiff\Core\JsonSerializationSettings.cs" />
+    <Compile Include="External\Octodiff\Core\SupportedAlgorithms.cs" />
+    <Compile Include="External\Octodiff\Delta\BinaryDeltaReader.cs" />
+    <Compile Include="External\Octodiff\Delta\BinaryDeltaWriter.cs" />
+    <Compile Include="External\Octodiff\Delta\DataRange.cs" />
+    <Compile Include="External\Octodiff\Delta\DeltaApplier.cs" />
+    <Compile Include="External\Octodiff\Delta\DeltaBuilder.cs" />
+    <Compile Include="External\Octodiff\Delta\DeltaMetadata.cs" />
+    <Compile Include="External\Octodiff\Delta\IDeltaReader.cs" />
+    <Compile Include="External\Octodiff\Delta\IDeltaWriter.cs" />
+    <Compile Include="External\Octodiff\Diagnostics\ProgressReport.cs" />
+    <Compile Include="External\Octodiff\Hash\Adler32RollingChecksum.cs" />
+    <Compile Include="External\Octodiff\Hash\Adler32RollingChecksumV2.cs" />
+    <Compile Include="External\Octodiff\Hash\HashAlgorithmWrapper.cs" />
+    <Compile Include="External\Octodiff\Hash\IHashAlgorithm.cs" />
+    <Compile Include="External\Octodiff\Hash\IRollingChecksum.cs" />
+    <Compile Include="External\Octodiff\Hash\XxHashAlgorithm.cs" />
+    <Compile Include="External\Octodiff\NullProgressReporter.cs" />
+    <Compile Include="External\Octodiff\Signature\ISignatureReader.cs" />
+    <Compile Include="External\Octodiff\Signature\ISignatureWriter.cs" />
+    <Compile Include="External\Octodiff\Signature\Signature.cs" />
+    <Compile Include="External\Octodiff\Signature\SignatureBuilder.cs" />
+    <Compile Include="External\Octodiff\Signature\SignatureReader.cs" />
+    <Compile Include="External\Octodiff\Signature\SignatureWriter.cs" />
     <Compile Include="External\SharpZipLib\Core\Exceptions\SharpZipBaseException.cs" />
     <Compile Include="External\SharpZipLib\Core\Exceptions\StreamDecodingException.cs" />
     <Compile Include="External\SharpZipLib\Core\Exceptions\StreamUnsupportedException.cs" />
@@ -91,55 +151,10 @@
     <Compile Include="PatchMethods\PatchMethodBase.cs" />
     <Compile Include="Serialization\ProjectInfo.cs" />
     <Compile Include="Serialization\VersionCode.cs" />
-    <Compile Include="External\7zip\Common\CommandLineParser.cs" />
-    <Compile Include="External\7zip\Common\CRC.cs" />
-    <Compile Include="External\7zip\Common\InBuffer.cs" />
-    <Compile Include="External\7zip\Common\OutBuffer.cs" />
-    <Compile Include="External\7zip\Compress\LzmaAlone\LzmaAlone.cs" />
-    <Compile Include="External\7zip\Compress\LzmaAlone\LzmaBench.cs" />
-    <Compile Include="External\7zip\Compress\LZMA\LzmaBase.cs" />
-    <Compile Include="External\7zip\Compress\LZMA\LzmaDecoder.cs" />
-    <Compile Include="External\7zip\Compress\LZMA\LzmaEncoder.cs" />
-    <Compile Include="External\7zip\Compress\LZ\IMatchFinder.cs" />
-    <Compile Include="External\7zip\Compress\LZ\LzBinTree.cs" />
-    <Compile Include="External\7zip\Compress\LZ\LzInWindow.cs" />
-    <Compile Include="External\7zip\Compress\LZ\LzOutWindow.cs" />
-    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoder.cs" />
-    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoderBit.cs" />
-    <Compile Include="External\7zip\Compress\RangeCoder\RangeCoderBitTree.cs" />
-    <Compile Include="External\7zip\ICoder.cs" />
+    <Compile Include="Utilities\IProgressReporter.cs" />
     <Compile Include="Utilities\ZipUtils.cs" />
     <Compile Include="Other\Localization.cs" />
-    <Compile Include="External\Octodiff\Core\Adler32RollingChecksum.cs" />
-    <Compile Include="External\Octodiff\Core\Adler32RollingChecksumV2.cs" />
-    <Compile Include="External\Octodiff\Core\AggregateCopyOperationsDecorator.cs" />
-    <Compile Include="External\Octodiff\Core\BinaryDeltaReader.cs" />
-    <Compile Include="External\Octodiff\Core\BinaryDeltaWriter.cs" />
-    <Compile Include="External\Octodiff\Core\BinaryFormat.cs" />
-    <Compile Include="External\Octodiff\Core\ChunkSignature.cs" />
-    <Compile Include="External\Octodiff\Core\ChunkSignatureChecksumComparer.cs" />
-    <Compile Include="External\Octodiff\Core\CompatibilityException.cs" />
-    <Compile Include="External\Octodiff\Core\CorruptFileFormatException.cs" />
-    <Compile Include="External\Octodiff\Core\DataRange.cs" />
-    <Compile Include="External\Octodiff\Core\DeltaApplier.cs" />
-    <Compile Include="External\Octodiff\Core\DeltaBuilder.cs" />
-    <Compile Include="External\Octodiff\Core\DeltaStatistics.cs" />
-    <Compile Include="External\Octodiff\Core\HashAlgorithmWrapper.cs" />
-    <Compile Include="External\Octodiff\Core\IDeltaReader.cs" />
-    <Compile Include="External\Octodiff\Core\IDeltaWriter.cs" />
-    <Compile Include="External\Octodiff\Core\IHashAlgorithm.cs" />
-    <Compile Include="External\Octodiff\Core\IRollingChecksum.cs" />
-    <Compile Include="External\Octodiff\Core\ISignatureReader.cs" />
-    <Compile Include="External\Octodiff\Core\ISignatureWriter.cs" />
-    <Compile Include="External\Octodiff\Core\Signature.cs" />
-    <Compile Include="External\Octodiff\Core\SignatureBuilder.cs" />
-    <Compile Include="External\Octodiff\Core\SignatureReader.cs" />
-    <Compile Include="External\Octodiff\Core\SignatureWriter.cs" />
-    <Compile Include="External\Octodiff\Core\SupportedAlgorithms.cs" />
-    <Compile Include="External\Octodiff\Core\UsageException.cs" />
     <Compile Include="External\Octodiff\Diagnostics\ConsoleProgressReporter.cs" />
-    <Compile Include="External\Octodiff\Diagnostics\IProgressReporter.cs" />
-    <Compile Include="External\Octodiff\Diagnostics\NullProgressReporter.cs" />
     <Compile Include="Utilities\OctoUtils.cs" />
     <Compile Include="Communications\PatchProgressInfo.cs" />
     <Compile Include="Other\PatchDownloadManager.cs" />
@@ -163,6 +178,7 @@
     <None Include="External\7zip\LICENSE" />
     <None Include="External\Octodiff\LICENSE" />
     <None Include="External\SharpZipLib\LICENSE" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

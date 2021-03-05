@@ -1,6 +1,8 @@
 using System.IO;
+using System.Threading.Tasks;
+using FastRsync.Delta;
 
-namespace Octodiff.Core
+namespace FastRsync.Core
 {
     // This decorator turns any sequential copy operations into a single operation, reducing 
     // the size of the delta file.
@@ -26,9 +28,15 @@ namespace Octodiff.Core
             decorated.WriteDataCommand(source, offset, length);
         }
 
-        public void WriteMetadata(IHashAlgorithm hashAlgorithm, byte[] expectedNewFileHash)
+        public async Task WriteDataCommandAsync(Stream source, long offset, long length)
         {
-            decorated.WriteMetadata(hashAlgorithm, expectedNewFileHash);
+            FlushCurrentCopyCommand();
+            await decorated.WriteDataCommandAsync(source, offset, length).ConfigureAwait(false);
+        }
+
+        public void WriteMetadata(DeltaMetadata metadata)
+        {
+            decorated.WriteMetadata(metadata);
         }
 
         public void WriteCopyCommand(DataRange chunk)
@@ -44,9 +52,12 @@ namespace Octodiff.Core
             }
         }
 
-        void FlushCurrentCopyCommand()
+        private void FlushCurrentCopyCommand()
         {
-            if (bufferedCopy.Length <= 0) return;
+            if (bufferedCopy.Length <= 0)
+            {
+                return;
+            }
 
             decorated.WriteCopyCommand(bufferedCopy);
             bufferedCopy = new DataRange();

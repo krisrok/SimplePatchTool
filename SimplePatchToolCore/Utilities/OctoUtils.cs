@@ -1,6 +1,10 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using FastRsync.Core;
+using FastRsync.Delta;
+using FastRsync.Signature;
 using Octodiff.Core;
-using Octodiff.Diagnostics;
+
 
 namespace SimplePatchToolCore
 {
@@ -39,12 +43,16 @@ namespace SimplePatchToolCore
 			string deltaPathTemp = deltaPath + ".detmp";
 			string signaturePathTemp = deltaPath + ".sgtmp";
 			long deltaSize = 0L;
+			int selectedChunkSize = -1;
 			for( int i = 0; i < validChunkSizes; i++ )
 			{
 				if( i == 0 )
 				{
 					CalculateDeltaInternal( sourcePath, targetPath, deltaPath, signaturePathTemp, chunkSizes[i], progressReporter );
 					deltaSize = new FileInfo( deltaPath ).Length;
+					selectedChunkSize = chunkSizes[i];
+
+					Console.WriteLine($"Initial chunk size: {selectedChunkSize}, deltaSize: {deltaSize.ToMegabytes()}");
 				}
 				else
 				{
@@ -54,6 +62,10 @@ namespace SimplePatchToolCore
 					if( newDeltaSize < deltaSize )
 					{
 						PatchUtils.MoveFile( deltaPathTemp, deltaPath );
+
+						selectedChunkSize = chunkSizes[i];
+						Console.WriteLine($"Improved chunk size: {selectedChunkSize}, deltaSize: {newDeltaSize.ToMegabytes()} ({(newDeltaSize - deltaSize).ToMegabytes()})");
+
 						deltaSize = newDeltaSize;
 					}
 				}

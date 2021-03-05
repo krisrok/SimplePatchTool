@@ -1,19 +1,19 @@
 ﻿using System;
 
-namespace Octodiff.Diagnostics
+namespace FastRsync.Diagnostics
 {
-    public class ConsoleProgressReporter : IProgressReporter
+    public class ConsoleProgressReporter : IProgress<ProgressReport>
     {
-        private string currentOperation;
+        private ProgressOperationType currentOperation;
         private int progressPercentage;
 
-        public void ReportProgress(string operation, long currentPosition, long total)
+        public void Report(ProgressReport progress)
         {
-            var percent = (int)((double)currentPosition/total * 100d + 0.5);
-            if (currentOperation != operation)
+            var percent = (int)((double)progress.CurrentPosition / progress.Total * 100d + 0.5);
+            if (currentOperation != progress.Operation)
             {
                 progressPercentage = -1;
-                currentOperation = operation;
+                currentOperation = progress.Operation;
             }
 
             if (progressPercentage != percent && percent % 10 == 0)

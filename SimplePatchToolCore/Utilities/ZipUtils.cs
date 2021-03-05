@@ -12,6 +12,16 @@ namespace SimplePatchToolCore
 
 	public static class ZipUtils
 	{
+		public enum LzmaSpeed : int
+		{
+			Fastest = 5,
+			VeryFast = 8,
+			Fast = 16,
+			Medium = 32,
+			Slow = 64,
+			VerySlow = 128,
+		}
+
 		public static void CompressFile( string inFile, string outFile, CompressionFormat format )
 		{
 			using( FileStream input = new FileStream( inFile, FileMode.Open, FileAccess.Read ) )
@@ -19,8 +29,10 @@ namespace SimplePatchToolCore
 			{
 				if( format == CompressionFormat.LZMA )
 				{
-					// Credit: http://stackoverflow.com/questions/7646328/how-to-use-the-7z-sdk-to-compress-and-decompress-a-file
-					Compression.LZMA.Encoder coder = new Compression.LZMA.Encoder();
+
+                    // Credit: http://stackoverflow.com/questions/7646328/how-to-use-the-7z-sdk-to-compress-and-decompress-a-file
+                    Compression.LZMA.Encoder coder = new Compression.LZMA.Encoder();
+					coder.SetCoderProperties(new[] { SevenZip.CoderPropID.NumFastBytes }, new object[] { (int)LzmaSpeed.Fast });
 
 					// Write the encoder properties
 					coder.WriteCoderProperties( output );
@@ -33,7 +45,7 @@ namespace SimplePatchToolCore
 				}
 				else if( format == CompressionFormat.GZIP )
 				{
-					using( GZipStream compressionStream = new GZipStream( output, CompressionMode.Compress ) )
+					using( GZipStream compressionStream = new GZipStream( output, System.IO.Compression.CompressionLevel.Optimal ) )
 					{
 						input.CopyTo( compressionStream );
 					}
@@ -67,7 +79,7 @@ namespace SimplePatchToolCore
 				}
 				else if( format == CompressionFormat.GZIP )
 				{
-					using( GZipStream decompressionStream = new GZipStream( input, CompressionMode.Decompress ) )
+					using( GZipStream decompressionStream = new GZipStream( input, System.IO.Compression.CompressionMode.Decompress ) )
 					{
 						decompressionStream.CopyTo( output );
 					}

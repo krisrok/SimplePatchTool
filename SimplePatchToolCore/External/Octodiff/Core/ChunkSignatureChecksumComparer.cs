@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Octodiff.Core
+namespace FastRsync.Core
 {
     class ChunkSignatureChecksumComparer : IComparer<ChunkSignature>
     {

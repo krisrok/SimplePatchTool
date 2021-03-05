@@ -136,8 +136,8 @@ namespace SimplePatchToolCore
 				VersionInfo result = serializer.Deserialize( stream ) as VersionInfo;
 				if( result != null )
 				{
-					result.IncrementalPatches.RemoveAll( ( patch ) => !patch.FromVersion.IsValid || !patch.ToVersion.IsValid || patch.ToVersion <= patch.FromVersion );
-					result.IncrementalPatches.Sort( IncrementalPatchComparison );
+                    result.IncrementalPatches.RemoveAll((patch) => !patch.FromVersion.IsValid || !patch.ToVersion.IsValid || patch.ToVersion <= patch.FromVersion);
+                    result.IncrementalPatches.Sort( IncrementalPatchComparison );
 
 					// BaseDownloadURL uses '/' as path separator char, be consistent
 					if( result.BaseDownloadURL.StartsWith( "file://" ) )
